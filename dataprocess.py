@@ -48,7 +48,7 @@ def test2(data):
     dict3 = []
     dict4 = []
     for item in data:
-        matcher = re.match("([A-Z]?\d+栋)?(.*单元)?(.*层)?(.*室)?", item, re.M | re.I)
+        matcher = re.match("(.*栋)?(.*单元)?(.*层)?(.*室)?", item, re.M | re.I)
         dict1.append(matcher.group(1))
         dict2.append(matcher.group(2))
         dict3.append(matcher.group(3))
@@ -64,7 +64,7 @@ def success():
     df['市'] = dataPrecessed['市']
     df['区'] = dataPrecessed['区']
     df['地址'] = dataPrecessed['地址']
-    df['小区'] = df.apply(lambda x: re.split("[A-Z\-]?\d+(?=栋)", str(x["地址"]))[0], axis=1)
+    df['小区'] = df.apply(lambda x: re.split("(\d\-?)+(?=栋)|([A-Z]?\d)+(?=栋)", str(x["地址"]))[0], axis=1)
     df['楼栋信息'] = df.apply(lambda x: re.sub(str(x["小区"]), "", str(x["地址"])), axis=1)
     dict1, dict2, dict3, dict4 = test2(df['楼栋信息'])
     # print(dict1)
